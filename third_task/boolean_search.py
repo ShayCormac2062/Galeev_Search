@@ -39,6 +39,7 @@ class BooleanSearch:
 
     def search(self, search_words):
         tokens = re.split('\\s+', search_words)
+        tokens = re.findall(r'\(|\)|\w+|[^\s\w]', search_words)
         parsed_token = self.morph.parse(tokens[0])[0]
         start_token = parsed_token.normal_form if parsed_token.normalized.is_known else tokens[0].lower()
         result = SearchQuery('', set())
@@ -95,5 +96,5 @@ if __name__ == '__main__':
     print(boolean_search.search('омского депутата'))
     print('намекать')
     print(boolean_search.search('намекать'))
-    print('омский & депутат | намекает')
-    print(boolean_search.search('омский & депутат | намекает'))
+    print('(омский & депутат) | намекает')
+    print(boolean_search.search('(омский & депутат) | намекает'))
